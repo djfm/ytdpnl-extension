@@ -16,7 +16,10 @@
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
 		"outDir": "build",
-		"skipLibCheck": true
+		"skipLibCheck": true,
+		"paths": {
+			"typeorm": ["./node_modules/typeorm/typeorm-model-shim.js"]
+		}
 	},
 	"include": ["."],
 	"exclude": ["node_modules", "dist"],

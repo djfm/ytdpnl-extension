@@ -2,6 +2,7 @@ const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 const FileManagerPlugin = require('filemanager-webpack-plugin');
 const {EnvironmentPlugin} = require('webpack');
+const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 
 const mode = process.env.NODE_ENV || 'development';
 
@@ -20,6 +21,9 @@ module.exports = {
 		path: path.resolve(__dirname, 'dist', 'chrome'),
 	},
 	resolve: {
+		alias: {
+			typeorm: './node_modules/typeorm/typeorm-model-shim.js',
+		},
 		extensions: ['.ts', '.tsx', '.js'],
 		fallback: {
 			crypto: 'crypto-browserify',
@@ -29,6 +33,7 @@ module.exports = {
 			fs: false,
 			assert: false,
 			process: false,
+			typeorm: false,
 		},
 	},
 	module: {
@@ -110,6 +115,7 @@ module.exports = {
 				},
 			},
 		}),
+		new BundleAnalyzerPlugin(),
 	],
 	devtool: 'inline-source-map',
 };
