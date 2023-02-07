@@ -35,7 +35,38 @@ const loadLocalConfig = (): ParticipantConfig | undefined => {
 const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
 
 const UpdateLinkC: React.FC<{link: string | undefined}> = ({link}) => {
+	const [tooEarly, setTooEarly] = useState<boolean>(true);
+
+	useEffect(() => {
+		const storeTime = () => {
+			localStorage.setItem('latestUpdateCheck', `${Number(Date.now())}`);
+		};
+
+		if (!link) {
+			localStorage.removeItem('latestUpdateCheck');
+			return;
+		}
+
+		const latestUpdateCheckStr = localStorage.getItem('latestUpdateCheck');
+		if (!latestUpdateCheckStr) {
+			storeTime();
+			return;
+		}
+
+		const latestUpdateCheck = Number(latestUpdateCheckStr);
+		const now = Number(Date.now());
+
+		if (now - latestUpdateCheck > 1000 * 60 * 60 * 24) {
+			setTooEarly(false);
+		}
+	}, [link]);
+
 	if (!link) {
+		return null;
+	}
+
+	if (tooEarly) {
+		console.log('Too early to show update link');
 		return null;
 	}
 
